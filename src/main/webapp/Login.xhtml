@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	template="WEB-INF/template/Layout.xhtml">
+
+	<ui:define name="titulo">
+	Login
+</ui:define>
+
+	<ui:define name="conteudo">
+
+		<p:card style="background-color: 'red'">
+			<h:form id="frm-login">
+				<h:panelGrid id="loginPanelGrid" columns="2">
+					<p:outputLabel value="Email: " for="email" />
+					<p:inputText id="email" size="63" maxlength="150"
+						value="#{loginBean.usuario.email}" required="true" />
+
+					<p:outputLabel value="Senha: " for="senha" />
+					<p:password id="senha" size="60" maxlength="24"
+						value="#{loginBean.usuario.senha}" required="true"
+						toggleMask="true" />
+
+				</h:panelGrid>
+				<p:commandButton value="Entrar"
+					action="#{loginBean.efetuarLogin}" update="messages" ajax="false" />
+			</h:form>
+		</p:card>
+	</ui:define>
+
+</ui:composition>
