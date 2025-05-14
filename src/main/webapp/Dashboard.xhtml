@@ -60,11 +60,11 @@
 
 				<p:column exportable="false" ariaHeaderText="Actions">
 					<p:commandButton icon="pi pi-pencil"
-						update="messages clientesDataTable"
+						update="clientesDataTable :frm:clienteDialog"
 						oncomplete="PF('clienteDialogWidgetVar').show()" process="@this">
 						<f:setPropertyActionListener value="#{cliente}"
 							target="#{dashboardBean.cliente}" />
-						<p:resetInput target="clienteDialog" />
+						<p:resetInput target=":frm:clienteDialog" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-trash" process="@this"
 						oncomplete="PF('deleteClienteDialog').show()">
@@ -75,7 +75,7 @@
 			</p:dataTable>
 
 			<p:dialog id="clienteDialog" widgetVar="clienteDialogWidgetVar"
-				header="Novo cliente" modal="true" resizable="false"
+				header="Salvar cliente" modal="true" resizable="false"
 				closeOnEscape="true" showEffect="fade"
 				style="max-height: 80vh; overflow: auto;">
 
@@ -99,6 +99,8 @@
 					<p:outputLabel value="Logotipo:" for="fileUpload" />
 					<p:fileUpload id="fileUpload" mode="simple" multiple="false"
 						value="#{dashboardBean.file}" />
+
+
 
 					<h:outputLabel />
 					<h:outputLabel />
@@ -142,13 +144,13 @@
 			</p:dialog>
 
 			<p:confirmDialog widgetVar="deleteClienteDialog" showEffect="fade"
-				width="300" message="Deletar cliente?" header="Confirm"
+				width="300" message="Deletar cliente?" header="Confirmação"
 				severity="warn">
-				<p:commandButton value="Yes" icon="pi pi-check"
+				<p:commandButton value="Sim" icon="pi pi-check"
 					actionListener="#{dashboardBean.deletarCliente}" process="@this"
 					update="clientesDataTable"
 					oncomplete="PF('deleteClienteDialog').hide()" />
-				<p:commandButton value="No" type="button"
+				<p:commandButton value="Não" type="button"
 					styleClass="ui-button-secondary" icon="pi pi-times"
 					onclick="PF('deleteClienteDialog').hide()" />
 			</p:confirmDialog>
