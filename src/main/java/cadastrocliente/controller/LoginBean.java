@@ -15,6 +15,7 @@ import cadastrocliente.controller.dto.LoginRequest;
 import cadastrocliente.controller.dto.LoginResponse;
 import cadastrocliente.model.Usuario;
 import cadastrocliente.util.FacesMessagesUtil;
+import cadastrocliente.util.UpdateComponentUtil;
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -28,8 +29,7 @@ public class LoginBean implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	private final Usuario usuario = new Usuario();
-	@Inject
-	private ObjectMapper mapper;
+	private ObjectMapper mapper = new ObjectMapper();
 	@Inject
 	private FacesMessagesUtil messages;
 
@@ -55,6 +55,7 @@ public class LoginBean implements Serializable {
 			}
 		} catch (Exception e) {
 			messages.add("Erro ao efetuar login.", FacesMessage.SEVERITY_ERROR);
+			UpdateComponentUtil.update("messages");
 			return null;
 		}
 		return "Dashboard?faces-redirect=true";

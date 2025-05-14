@@ -19,14 +19,24 @@ html, body {
 	margin: 0;
 }
 
-#conteudo {
-	padding: 0 8px;
-	min-height: 80vh;
+/* 2) Corpo vira um flex container em coluna */
+body {
 	display: flex;
 	flex-direction: column;
-	justify-content : center;
-	align-items: center;
-	justify-content: center;
+}
+
+/* 3) Seu main ou wrapper de conteúdo expande para ocupar o espaço disponível */
+#conteudo {
+	flex: 1;
+}
+
+/* 4) Footer entra no fluxo normal, sem position:fixed */
+footer {
+	border-top: 1px solid #ccc;
+	padding: 5px 8px;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	text-align: center;
 }
 
 #titulo {
@@ -35,14 +45,13 @@ html, body {
 	align-items: center;
 }
 
-footer {
-	border-top: 1px solid #ccc;
-	padding: 5px 8px;
-	margin-top: 20px;
-	margin-bottom: 10px;
-	position: fixed;
-	bottom: 0;
-	left: 0;
-	right: 0;
-	text-align: center;
+#toolbarAcoes {
+	display: flex;
+	gap: 3px;
 }
+
+#clientDialog {
+	max-height: 70vh;
+	overflow: auto;
+}
+

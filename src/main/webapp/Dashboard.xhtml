@@ -8,132 +8,147 @@
 
 	<ui:define name="titulo">
 	Dashboard
-</ui:define>
+	</ui:define>
 
 	<ui:define name="conteudo">
-		<h:form id="frm">
+		<f:metadata>
+			<f:viewAction action="#{dashboardBean.validarLogin}"
+				onPostBack="false" />
+		</f:metadata>
+		<h:form id="frm" enctype="multipart/form-data">
 
 			<p:toolbar id="toolbar">
 				<f:facet name="left">
-					
-					<p:commandButton value="Novo" icon="fa fa-plus"
-						actionListener="#{gestaoEmpresasBean.prepararNovaEmpresa}"
-						oncomplete="PF('empresaDialogWidgetVar').show()"
-						update="empresaDialog" process="@this">
-						<p:resetInput target="empresaDialog" />
-					</p:commandButton>
+					<div id="toolbarAcoes">
+						<p:commandButton value="Novo" icon="pi pi-plus"
+							actionListener="#{dashboardBean.instanciarNovoCliente}"
+							oncomplete="PF('clienteDialogWidgetVar').show()"
+							update="clienteDialog" process="@this">
+							<p:resetInput target="clienteDialog" />
+						</p:commandButton>
 
-					<span class="ui-separator"> <span
-						class="ui-icon ui-icon-grip-dotted-vertical" />
-					</span>
 
-					<p:commandButton title="Editar" icon="fa fa-edit"
-						disabled="#{not gestaoEmpresasBean.empresaSeleciona}"
-						actionListener="#{gestaoEmpresasBean.prepararEdicao}"
-						oncomplete="PF('empresaDialogWidgetVar').show()"
-						update="empresaDialog" process="@this">
-						<p:resetInput target="empresaDialog" />
-					</p:commandButton>
+						<p:commandButton title="Editar" icon="pi pi-user-edit"
+							disabled="#{not dashboardBean.clienteSelecionado}"
+							oncomplete="PF('clienteDialogWidgetVar').show()"
+							update="clienteDialog" process="@this">
+							<p:resetInput target="clienteDialog" />
+						</p:commandButton>
 
-					<p:commandButton title="Excluir" icon="fa fa-trash"
-						disabled="#{not gestaoEmpresasBean.empresaSeleciona}"
-						actionListener="#{gestaoEmpresasBean.excluir}"
-						update="messages empresasDataTable toolbar" process="@this">
-						<p:confirm icon="ui-icon-alert" header="Confirmação de exclusão"
-							message="Posso excluir a empresa?" />
-					</p:commandButton>
+						<p:commandButton action="#{dashboardBean.deletarCliente}"
+							disabled="#{not dashboardBean.clienteSelecionado}"
+							update="messages clientesDataTable toolbar" styleClass="mr-2"
+							icon="pi pi-trash">
+							<p:confirm header="Confirmação" message="Tem certeza?"
+								icon="pi pi-exclamation-triangle" process="@this" />
+						</p:commandButton>
 
-					<span class="ui-separator"> <span
-						class="ui-icon ui-icon-grip-dotted-vertical" />
-					</span>
-
-					<p:commandButton title="Exportar para o Excel"
-						icon="fa fa-file-excel-o">
-						<p:dataExporter type="xls" target="empresasDataTable"
-							fileName="empresas" />
-					</p:commandButton>
+						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
+							responsive="true" width="350">
+							<p:commandButton value="No" type="button"
+								styleClass="ui-confirmdialog-no ui-button-flat" />
+							<p:commandButton value="Yes" type="button"
+								styleClass="ui-confirmdialog-yes" />
+						</p:confirmDialog>
+					</div>
 				</f:facet>
 			</p:toolbar>
 
-			<p:spacer height="20px" />
+			<p:spacer height="10px" />
 
-			<p:dataTable id="empresasDataTable"
-				value="#{gestaoEmpresasBean.listaEmpresas}" var="empresa"
-				emptyMessage="Nenhuma informação a ser exibida" paginator="true"
-				rows="10" paginatorPosition="bottom" selectionMode="single"
-				selection="#{gestaoEmpresasBean.empresa}" rowKey="#{empresa.id}">
+			<p:dataTable id="clientesDataTable" value="#{dashboardBean.clientes}"
+				var="cliente" emptyMessage="Nenhuma informação a ser exibida"
+				paginator="true" rows="5" paginatorPosition="bottom"
+				selectionMode="single" selection="#{dashboardBean.cliente}"
+				rowKey="#{cliente.id}">
 
 				<p:ajax event="rowSelect" update="frm:toolbar" />
 
 				<p:ajax event="rowUnselect" update="frm:toolbar" />
 
-				<p:column headerText="Razão social" sortBy="#{empresa.razaoSocial}">
-					<h:outputText value="#{empresa.razaoSocial}" />
+				<p:column headerText="Nome" sortBy="#{cliente.nome}">
+					<h:outputText value="#{cliente.nome}" />
 				</p:column>
 
-				<p:column headerText="Nome fantasia">
-					<h:outputText value="#{empresa.nomeFantasia}" />
+				<p:column headerText="Email">
+					<h:outputText value="#{cliente.email}" />
 				</p:column>
 
-				<p:column headerText="Tipo empresa">
-					<h:outputText value="#{empresa.tipo}" />
+
+				<p:column headerText="Endereços">
+					<h:outputText value="#{cliente.enderecosFormatado}" />
 				</p:column>
 
-				<p:column headerText="Ramo atividade">
-					<h:outputText value="#{empresa.ramoAtividade.descricao}" />
-				</p:column>
+
 			</p:dataTable>
 
-			<p:dialog id="empresaDialog" header="Nova empresa"
-				widgetVar="empresaDialogWidgetVar" modal="true" resizable="false"
-				closeOnEscape="true">
-				<p:messages id="empresaMessages" />
+			<p:dialog id="clienteDialog" widgetVar="clienteDialogWidgetVar"
+				header="Novo cliente" modal="true" resizable="false"
+				closeOnEscape="true" showEffect="fade"
+				style="max-height: 80vh; overflow: auto;">
 
-				<p:defaultCommand target="salvarCommandButton" scope="empresaDialog" />
+				<p:messages id="clienteDialogMessages" />
 
-				<h:panelGrid id="empresaPanelGrid" columns="2"
-					rendered="#{gestaoEmpresasBean.empresa ne null}">
-					<p:outputLabel value="Razão social: " for="razaoSocial" />
-					<p:inputText id="razaoSocial" size="80" maxlength="120"
-						value="#{gestaoEmpresasBean.empresa.razaoSocial}" />
+				<p:defaultCommand target="salvarCommandButton" scope="clienteDialog" />
 
-					<p:outputLabel value="Nome fantasia: " for="nomeFantasia" />
-					<p:inputText id="nomeFantasia" size="80" maxlength="80"
-						value="#{gestaoEmpresasBean.empresa.nomeFantasia}" />
+				<h:panelGrid id="clientePanelGrid" columns="2"
+					rendered="#{dashboardBean.cliente ne null}">
 
-					<p:outputLabel value="Tipo empresa: " for="tipo" />
-					<p:selectOneMenu id="tipo"
-						value="#{gestaoEmpresasBean.empresa.tipo}">
-						<f:selectItem itemLabel="Selecione..." />
-						<f:selectItems value="#{gestaoEmpresasBean.tiposEmpresa}"
-							var="tipoEmpresa" itemLabel="#{tipoEmpresa.descricao}"
-							itemValue="#{tipoEmpresa}" />
-					</p:selectOneMenu>
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{dashboardBean.cliente.nome}"
+						required="true" requiredMessage="O nome é obrigatório"
+						maxlength="150" size="80" />
 
-					<p:outputLabel value="CNPJ: " for="cnpj" />
-					<p:inputMask id="cnpj" mask="99.999.999/9999-99" size="18"
-						maxlength="18" value="#{gestaoEmpresasBean.empresa.cnpj}" />
+					<p:outputLabel value="Email:" for="email" />
+					<p:inputText id="email" value="#{dashboardBean.cliente.email}"
+						required="true" requiredMessage="O e-mail é obrigatório"
+						maxlength="150" size="80" />
 
-					<p:outputLabel value="Data Fundação: " for="dataFundacao" />
-					<p:calendar id="dataFundacao" pattern="dd/MM/yyyy" size="30"
-						value="#{gestaoEmpresasBean.empresa.dataFundacao}" />
-
-					<p:outputLabel value="Ramo atividade: " for="ramoAtividade" />
-					<p:autoComplete id="ramoAtividade" size="80"
-						value="#{gestaoEmpresasBean.empresa.ramoAtividade}"
-						completeMethod="#{gestaoEmpresasBean.completarRamoAtividade}"
-						converter="#{gestaoEmpresasBean.ramoAtividadeConverter}"
-						var="ramoAtividade" itemLabel="#{ramoAtividade.descricao}"
-						itemValue="#{ramoAtividade}" />
+					<p:outputLabel value="Logotipo:" for="fileUpload" />
+					<p:fileUpload id="fileUpload" mode="simple" multiple="false"
+						value="#{dashboardBean.file}" />
 
 					<h:outputLabel />
+					<h:outputLabel />
+
+					<p:commandButton value="Adicionar"
+						action="#{dashboardBean.adicionarCampo}" update="enderecosPanel"
+						icon="pi pi-plus" process="@this enderecosPanel"
+						style="margin-top:10px;" />
+					<h:outputLabel />
+
+					<p:outputPanel id="enderecosPanel" layout="block">
+						<ui:repeat value="#{dashboardBean.cliente.enderecos}"
+							var="endereco" varStatus="status">
+							<h:panelGroup layout="block" style="margin-bottom:10px;">
+								<h:outputLabel value="Logradouro #{status.index + 1}" />
+								<p:inputText
+									value="#{dashboardBean.cliente.enderecos[status.index].logradouro}"
+									style="margin-right:5px;" required="true"
+									requiredMessage="O endereço é obrigatório" />
+								<p:commandButton icon="pi pi-trash"
+									action="#{dashboardBean.removerCampo(status.index)}"
+									update=":frm:enderecosPanel" process="@this"
+									rendered="#{dashboardBean.cliente.enderecos.size() > 1}" />
+							</h:panelGroup>
+						</ui:repeat>
+					</p:outputPanel>
+					<h:outputLabel />
+
+
+
+					<h:outputLabel />
+					<h:outputLabel />
+					<h:outputLabel />
 					<p:commandButton id="salvarCommandButton" value="Salvar"
-						actionListener="#{gestaoEmpresasBean.salvar}"
-						update="empresaPanelGrid empresaMessages"
-						oncomplete="if (!args.validationFailed) PF('empresaDialogWidgetVar').hide()"
-						process="empresaDialog" />
+						actionListener="#{dashboardBean.salvarCliente}"
+						process="clienteDialog"
+						update="clientesDataTable clienteDialogMessages"
+						oncomplete="if (!args.validationFailed) PF('clienteDialogWidgetVar').hide()" />
+
 				</h:panelGrid>
 			</p:dialog>
+
 		</h:form>
 	</ui:define>
 

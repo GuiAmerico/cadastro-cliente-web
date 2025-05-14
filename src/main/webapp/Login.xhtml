@@ -12,8 +12,9 @@
 
 	<ui:define name="conteudo">
 
-		<p:card style="background-color: 'red'">
-			<h:form id="frm-login">
+		<p:card style="width: 80%; margin: auto">
+			<h:form id="frm-login"
+				style="display: flex; flex-direction: column; align-items:center; justify-content:center;">
 				<h:panelGrid id="loginPanelGrid" columns="2">
 					<p:outputLabel value="Email: " for="email" />
 					<p:inputText id="email" size="63" maxlength="150"
@@ -25,8 +26,9 @@
 						toggleMask="true" />
 
 				</h:panelGrid>
-				<p:commandButton value="Entrar"
-					action="#{loginBean.efetuarLogin}" update="messages" ajax="false" />
+				<p:commandButton value="Entrar" action="#{loginBean.efetuarLogin}"
+					update="messages" ajax="false" style="width: 50%; pading: 10px; margin-top:5px" process="@form"/>
+					
 			</h:form>
 		</p:card>
 	</ui:define>
