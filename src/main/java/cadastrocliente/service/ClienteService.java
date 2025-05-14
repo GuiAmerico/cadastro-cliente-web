@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -24,7 +23,6 @@ import cadastrocliente.model.Endereco;
 import cadastrocliente.service.dto.RequestPart;
 import cadastrocliente.service.enums.HttpMethod;
 import cadastrocliente.util.ContextParamUtil;
-import cadastrocliente.util.FileUtils;
 
 //@RequestScoped
 public class ClienteService implements Serializable {

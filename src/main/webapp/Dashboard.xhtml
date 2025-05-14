@@ -67,7 +67,7 @@
 						<p:resetInput target="clienteDialog" />
 					</p:commandButton>
 					<p:commandButton icon="pi pi-trash" process="@this"
-						oncomplete="PF('deleteProductDialog').show()">
+						oncomplete="PF('deleteClienteDialog').show()">
 						<f:setPropertyActionListener value="#{cliente}"
 							target="#{dashboardBean.cliente}" />
 					</p:commandButton>
@@ -141,16 +141,16 @@
 				</h:panelGrid>
 			</p:dialog>
 
-			<p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade"
+			<p:confirmDialog widgetVar="deleteClienteDialog" showEffect="fade"
 				width="300" message="Deletar cliente?" header="Confirm"
 				severity="warn">
 				<p:commandButton value="Yes" icon="pi pi-check"
 					actionListener="#{dashboardBean.deletarCliente}" process="@this"
 					update="clientesDataTable"
-					oncomplete="PF('deleteProductDialog').hide()" />
+					oncomplete="PF('deleteClienteDialog').hide()" />
 				<p:commandButton value="No" type="button"
 					styleClass="ui-button-secondary" icon="pi pi-times"
-					onclick="PF('deleteProductDialog').hide()" />
+					onclick="PF('deleteClienteDialog').hide()" />
 			</p:confirmDialog>
 		</h:form>
 	</ui:define>
