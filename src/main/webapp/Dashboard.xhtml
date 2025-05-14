@@ -26,30 +26,6 @@
 							update="clienteDialog" process="@this">
 							<p:resetInput target="clienteDialog" />
 						</p:commandButton>
-
-
-						<p:commandButton title="Editar" icon="pi pi-user-edit"
-							disabled="#{not dashboardBean.clienteSelecionado}"
-							oncomplete="PF('clienteDialogWidgetVar').show()"
-							update="clienteDialog" process="@this">
-							<p:resetInput target="clienteDialog" />
-						</p:commandButton>
-
-						<p:commandButton action="#{dashboardBean.deletarCliente}"
-							disabled="#{not dashboardBean.clienteSelecionado}"
-							update="messages clientesDataTable toolbar" styleClass="mr-2"
-							icon="pi pi-trash">
-							<p:confirm header="Confirmação" message="Tem certeza?"
-								icon="pi pi-exclamation-triangle" process="@this" />
-						</p:commandButton>
-
-						<p:confirmDialog global="true" showEffect="fade" hideEffect="fade"
-							responsive="true" width="350">
-							<p:commandButton value="No" type="button"
-								styleClass="ui-confirmdialog-no ui-button-flat" />
-							<p:commandButton value="Yes" type="button"
-								styleClass="ui-confirmdialog-yes" />
-						</p:confirmDialog>
 					</div>
 				</f:facet>
 			</p:toolbar>
@@ -70,16 +46,32 @@
 					<h:outputText value="#{cliente.nome}" />
 				</p:column>
 
+				<p:column headerText="Logotipo">
+					<img src="#{cliente.logotipo}" width="100px" />
+				</p:column>
 				<p:column headerText="Email">
 					<h:outputText value="#{cliente.email}" />
 				</p:column>
-
 
 				<p:column headerText="Endereços">
 					<h:outputText value="#{cliente.enderecosFormatado}" />
 				</p:column>
 
 
+				<p:column exportable="false" ariaHeaderText="Actions">
+					<p:commandButton icon="pi pi-pencil"
+						update="messages clientesDataTable"
+						oncomplete="PF('clienteDialogWidgetVar').show()" process="@this">
+						<f:setPropertyActionListener value="#{cliente}"
+							target="#{dashboardBean.cliente}" />
+						<p:resetInput target="clienteDialog" />
+					</p:commandButton>
+					<p:commandButton icon="pi pi-trash" process="@this"
+						oncomplete="PF('deleteProductDialog').show()">
+						<f:setPropertyActionListener value="#{cliente}"
+							target="#{dashboardBean.cliente}" />
+					</p:commandButton>
+				</p:column>
 			</p:dataTable>
 
 			<p:dialog id="clienteDialog" widgetVar="clienteDialogWidgetVar"
@@ -149,6 +141,17 @@
 				</h:panelGrid>
 			</p:dialog>
 
+			<p:confirmDialog widgetVar="deleteProductDialog" showEffect="fade"
+				width="300" message="Deletar cliente?" header="Confirm"
+				severity="warn">
+				<p:commandButton value="Yes" icon="pi pi-check"
+					actionListener="#{dashboardBean.deletarCliente}" process="@this"
+					update="clientesDataTable"
+					oncomplete="PF('deleteProductDialog').hide()" />
+				<p:commandButton value="No" type="button"
+					styleClass="ui-button-secondary" icon="pi pi-times"
+					onclick="PF('deleteProductDialog').hide()" />
+			</p:confirmDialog>
 		</h:form>
 	</ui:define>
 

@@ -53,7 +53,8 @@ public class DashboardBean implements Serializable {
 	}
 
 	public List<Cliente> getClientes() {
-		return clienteService.buscarClientes();
+		List<Cliente> buscarClientes = clienteService.buscarClientes();
+		return buscarClientes;
 	}
 
 	public void instanciarNovoCliente() {
